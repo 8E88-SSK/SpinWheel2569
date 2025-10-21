@@ -1,11 +1,12 @@
 // Global variable to store all wheel settings
-let allWheelsData = [{ prizes: ['รางวัลที่ 1', 'รางวัลที่ 2'] }];
+// *** แก้ไข: เปลี่ยนค่าเริ่มต้นให้เป็นค่าว่างเพื่อให้ผู้ใช้ต้องกรอก ***
+let allWheelsData = [{ prizes: ['', ''] }];
 
 // เปิด Event Listener หลักเพียงครั้งเดียว
 document.addEventListener('DOMContentLoaded', () => {
 
     // ------------------------------------------------------------------
-    // --- โค้ดส่วน Page 1: ตั้งค่าวงล้อ ---
+    // --- โค้ดส่วน Page 1: ตั้งค่าวงล้อ (2 รางวัลคงที่) ---
     // ------------------------------------------------------------------
 
     if (document.querySelector('.page1')) {
@@ -22,46 +23,39 @@ document.addEventListener('DOMContentLoaded', () => {
         function renderWheelSettings() {
             wheelsContainer.innerHTML = '';
             allWheelsData.forEach((wheel, index) => {
+                // *** ใช้ค่าจาก Array โดยตรงและกำหนด fallback เป็น '' ***
+                const prize1Value = wheel.prizes[0] || '';
+                const prize2Value = wheel.prizes[1] || '';
+                
                 const wheelDiv = document.createElement('div');
                 wheelDiv.className = 'wheel-setting-block';
                 wheelDiv.innerHTML = `
-                    <h3>วงล้อที่ ${index + 1}</h3>
+                    <h3>วงล้อที่ ${index + 1} (2 รางวัล)</h3>
                     <div id="prizesList${index}">
-                        ${wheel.prizes.map((p, pIndex) => `
-                            <div class="prize-item" data-prize-index="${pIndex}">
-                                <input type="text" value="${p}" onchange="window.updatePrizeName(${index}, ${pIndex}, this.value)">
-                                <button class="btn-icon" onclick="window.removePrize(${index}, ${pIndex})">✖</button>
-                            </div>
-                        `).join('')}
+                        <div class="prize-item">
+                            <input type="text" value="${prize1Value}" placeholder="ใส่ชื่อรางวัล 1" onchange="window.updatePrizeName(${index}, 0, this.value)">
+                        </div>
+                         <div class="prize-item">
+                            <input type="text" value="${prize2Value}" placeholder="ใส่ชื่อรางวัล 2" onchange="window.updatePrizeName(${index}, 1, this.value)">
+                        </div>
                     </div>
-                    <button class="btn-secondary" onclick="window.addPrize(${index})">➕ เพิ่มชื่อรางวัล</button>
                 `;
                 wheelsContainer.appendChild(wheelDiv);
             });
             updateWheelCountDisplay();
         }
 
-        // ฟังก์ชันจัดการรางวัล (กำหนดให้เป็น window object เพื่อให้เรียกใช้จาก onclick ได้)
-        window.addPrize = (wheelIndex) => {
-            allWheelsData[wheelIndex].prizes.push(`รางวัลใหม่ ${allWheelsData[wheelIndex].prizes.length + 1}`);
-            renderWheelSettings();
-        };
-
-        window.removePrize = (wheelIndex, prizeIndex) => {
-            allWheelsData[wheelIndex].prizes.splice(prizeIndex, 1);
-            // ตรวจสอบว่ามีรางวัลเหลืออยู่หรือไม่ ถ้าเป็น 0 ให้เพิ่มรางวัลเริ่มต้นกลับมา
-            if (allWheelsData[wheelIndex].prizes.length === 0) {
-                 allWheelsData[wheelIndex].prizes.push('รางวัลเริ่มต้น');
-            }
-            renderWheelSettings();
-        };
-
+        // ฟังก์ชันจัดการรางวัล (ถูกปรับให้จัดการ 2 รางวัลคงที่)
         window.updatePrizeName = (wheelIndex, prizeIndex, newName) => {
+            // ตรวจสอบให้แน่ใจว่า Array มีขนาด 2
+            if (allWheelsData[wheelIndex].prizes.length < 2) {
+                 allWheelsData[wheelIndex].prizes = ['', ''];
+            }
             allWheelsData[wheelIndex].prizes[prizeIndex] = newName;
         };
 
         addWheelBtn.addEventListener('click', () => {
-            allWheelsData.push({ prizes: ['รางวัล A', 'รางวัล B'] });
+            allWheelsData.push({ prizes: ['', ''] }); // เพิ่มวงล้อใหม่ด้วย 2 รางวัลเริ่มต้นเป็นค่าว่าง
             renderWheelSettings();
         });
 
@@ -72,13 +66,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Event Listener สำหรับปุ่มสร้างวงล้อ (แก้ไขให้ทำงานได้)
+        // Event Listener สำหรับปุ่มสร้างวงล้อ
         generateWheelBtn.addEventListener('click', () => {
-            // ตรวจสอบว่ามีรางวัลอย่างน้อย 1 รางวัลในแต่ละวงล้อหรือไม่
-            const hasValidPrizes = allWheelsData.every(wheel => wheel.prizes.length > 0 && wheel.prizes.every(p => p.trim() !== ''));
+            // *** การตรวจสอบความถูกต้องยังคงใช้ logic เดิม แต่ตอนนี้จะทำงานได้แม่นยำขึ้นเพราะค่าเริ่มต้นเป็นค่าว่าง ***
+            const hasValidPrizes = allWheelsData.every(wheel => 
+                wheel.prizes.length === 2 && 
+                wheel.prizes.every(p => p && p.trim() !== '')
+            );
 
             if (!hasValidPrizes) {
-                alert('กรุณาเพิ่มชื่อรางวัลอย่างน้อย 1 รายการสำหรับทุกวงล้อ และห้ามว่างเปล่า!');
+                alert('กรุณาตั้งชื่อรางวัล 2 รายการสำหรับทุกวงล้อ และห้ามว่างเปล่า!');
                 return; 
             }
             
@@ -87,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 wheels: allWheelsData,
                 time: spinTime
             };
-            // ใช้ encodeURIComponent ก่อน btoa เพื่อป้องกันปัญหาตัวอักษรพิเศษ
             const encodedData = btoa(encodeURIComponent(JSON.stringify(dataToShare))); 
             window.location.href = `page2.html?data=${encodedData}`; 
         });
@@ -97,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } 
     
     // ------------------------------------------------------------------
-    // --- โค้ดส่วน Page 2: หมุนวงล้อ ---
+    // --- โค้ดส่วน Page 2: หมุนวงล้อ (ประวัติ 10 ค่าล่าสุด) ---
     // ------------------------------------------------------------------
 
     if (document.querySelector('.page2')) {
@@ -114,11 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let loadedWheelsData = [];
         let spinDuration = 2; 
 
-        // Colors for wheel slices
+        // Colors for wheel slices 
         const pastelColors = [
-            "#FFD1DC", "#FFB6C1", "#ADD8E6", "#87CEFA", 
+            "#FFB6C1", "#ADD8E6", "#FFD1DC", "#87CEFA", 
             "#98FB98", "#B0E0E6", "#FAFAD2", "#FFE4E1",
-            "#F0FFF0", "#FFFACD" // เพิ่มสีสำรอง
+            "#F0FFF0", "#FFFACD" 
         ];
         
         // --- Pop-up Controls ---
@@ -127,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Sound Functions ---
         function playSpinSound() {
              spinSound.loop = true;
-             spinSound.play().catch(e => console.log('Autoplay blocked for spin sound:', e));
+             spinSound.play().catch(e => console.log('Autoplay blocked for spin sound:', e)); 
         }
 
         function stopSpinSound() {
@@ -145,22 +141,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (encodedData) {
             try {
-                // ต้อง decodeURIComponent ก่อน JSON.parse
                 const decodedJsonString = decodeURIComponent(atob(encodedData)); 
                 const decodedData = JSON.parse(decodedJsonString);
                 
                 loadedWheelsData = decodedData.wheels.map(wheel => ({
                     ...wheel,
-                    // ตรวจสอบความถูกต้องของข้อมูล
                     prizes: wheel.prizes.filter(p => p.trim() !== ''),
                     currentRotation: 0,
                     result: 'ยังไม่มีการสุ่ม',
                     isSpinning: false,
-                })).filter(wheel => wheel.prizes.length > 0);
+                    history: [], 
+                })).filter(wheel => wheel.prizes.length === 2); 
                 
                 spinDuration = parseInt(decodedData.time);
 
-                if (loadedWheelsData.length === 0) throw new Error("No valid wheels data.");
+                if (loadedWheelsData.length === 0) throw new Error("No valid wheels data (Must have 2 prizes per wheel).");
 
                 if (loadedWheelsData.length > 1) {
                     spinAllBtn.style.display = 'block';
@@ -170,12 +165,12 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) {
                 console.error("Error decoding wheel data:", e);
                 alert("ข้อมูลวงล้อผิดพลาด! กรุณาตั้งค่าใหม่");
-                window.location.href = 'page1.html';
+                window.location.href = 'index.html';
                 return;
             }
         } else {
             // No data, redirect to Page 1
-            window.location.href = 'page1.html';
+            window.location.href = 'index.html';
             return;
         }
 
@@ -241,6 +236,22 @@ document.addEventListener('DOMContentLoaded', () => {
             return prizes[prizeIndex % totalPrizes];
         }
 
+        function updateHistoryDisplay(wheelIndex) {
+            const historyList = document.getElementById(`latestHistory${wheelIndex}`);
+            const wheelData = loadedWheelsData[wheelIndex];
+            
+            // แสดงประวัติ 10 รายการล่าสุด
+            const recentHistory = wheelData.history.slice(-10).reverse(); 
+
+            historyList.innerHTML = recentHistory.map((result, index) => {
+                const number = wheelData.history.length - index;
+                return `<li>#${number}: ${result}</li>`;
+            }).join('');
+            
+            // เลื่อนไปที่รายการล่าสุด
+            historyList.scrollTop = historyList.scrollHeight;
+        }
+
         // ฟังก์ชันหมุนวงล้อหลัก (กำหนดให้เป็น window object เพื่อให้เรียกใช้จาก onclick ได้)
         window.spinWheel = (wheelIndex) => {
             const wheelData = loadedWheelsData[wheelIndex];
@@ -274,10 +285,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const prize = getPrize(finalRotation, wheelData.prizes);
                     wheelData.result = prize;
                     
-                    // *** โค้ดที่แก้ไข: อัปเดตการแสดงผลรางวัลล่าสุดสำหรับวงล้อเดี่ยว ***
-                    document.getElementById(`latestResult${wheelIndex}`).textContent = prize; 
-                    // ***********************************************************************
+                    // บันทึกผลลัพธ์ลงใน History
+                    wheelData.history.push(prize);
+                    updateHistoryDisplay(wheelIndex);
 
+                    document.getElementById(`latestResult${wheelIndex}`).textContent = prize; 
+                    
                     // แก้ไขปัญหา 'หมุนอีกรอบ' ด้วยการปิด transition ชั่วคราว
                     canvas.style.transition = 'none'; 
                     
@@ -310,6 +323,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button id="spinBtn${index}" onclick="window.spinWheel(${index})" class="btn-spin">หมุน</button>
                 </div>
                 <p>รางวัลล่าสุด: <span id="latestResult${index}">${wheel.result}</span></p>
+                
+                <p>ประวัติการสุ่ม (ล่าสุด 10 รายการ):</p>
+                <ul id="latestHistory${index}" class="history-list">
+                    </ul>
             `;
             wheelsContainer.appendChild(wheelDiv);
 
@@ -329,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.spinWheel(index)
             );
             
-            await Promise.all(spinPromises);
+            const results = await Promise.all(spinPromises);
             
             playWinSound(); 
             
@@ -340,12 +357,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             popup.style.display = 'flex';
             
-            // Re-enable buttons and update latest result display
+            // Re-enable buttons and update latest result display and history
             spinAllBtn.disabled = false;
             loadedWheelsData.forEach((_, index) => {
                 document.getElementById(`spinBtn${index}`).disabled = false;
-                // โค้ดส่วนนี้ยังทำงานปกติสำหรับการอัปเดตผลรวมใน spinAll
                 document.getElementById(`latestResult${index}`).textContent = loadedWheelsData[index].result; 
+                // อัปเดตประวัติการสุ่มทั้งหมดหลัง Spin All
+                updateHistoryDisplay(index);
             });
         });
         
@@ -361,4 +379,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     }
-}); // ปิด Event Listener หลักเพียงครั้งเดียว
+});
