@@ -66,7 +66,7 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* --- Page 1 Styles --- */
+/* --- Page 1 Styles (ปรับให้เรียบง่ายขึ้น) --- */
 .page1 {
     display: flex;
     flex-direction: column;
@@ -145,20 +145,21 @@ button:disabled {
     margin: 20px auto;
 }
 
-/* Canvas is drawn by JS */
-
+/* *** แก้ไข: ใช้รูป chromosomes.png เป็นตัวชี้วงล้อ *** */
 .arrow {
     position: absolute;
-    top: -15px; /* Move slightly above the wheel */
+    top: 5px; 
     left: 50%;
     transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-top: 25px solid #FF6347; /* Tomato Red for visibility */
+    width: 35px; 
+    height: 35px; 
+    background-image: url('chromosomes.png'); 
+    background-size: contain; 
+    background-repeat: no-repeat;
+    background-position: center;
     z-index: 10;
 }
+/* ************************************************* */
 
 .btn-spin {
     position: absolute;
@@ -184,19 +185,6 @@ button:disabled {
     justify-content: center;
     align-items: center;
 }
-/* --- Pop-up Styles --- */
-.popup-overlay {
-    display: none; 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); 
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-}
 
 .popup-content {
     background-color: #fff;
@@ -208,21 +196,9 @@ button:disabled {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     animation: popIn 0.3s ease-out;
     
-    /* --- โค้ดที่เพิ่ม: การจัดการความสูงและการเลื่อน --- */
-    max-height: 80vh; /* จำกัดความสูงสูงสุดเป็น 80% ของความสูงหน้าจอ */
-    overflow-y: auto;  /* เปิดใช้งานการเลื่อนแนวตั้งเมื่อเนื้อหาเกิน */
-    /* ------------------------------------------------ */
-}
-
-.popup-content {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    animation: popIn 0.3s ease-out;
+    /* การจัดการความสูงและการเลื่อนเมื่อมีหลายวงล้อ */
+    max-height: 80vh; 
+    overflow-y: auto;  
 }
 
 .prize-text {
@@ -231,6 +207,17 @@ button:disabled {
     color: #7B68EE; /* Highlight color */
     display: block;
     margin-top: 5px;
+}
+
+/* เพิ่ม Style สำหรับประวัติการสุ่ม */
+.history-list {
+    max-height: 100px; /* จำกัดความสูงของประวัติ */
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: left;
 }
 
 #popupOkBtn {
