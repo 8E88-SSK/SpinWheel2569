@@ -1,0 +1,263 @@
+/* --- Global Styles --- */
+body {
+    font-family: 'Kanit', Arial, sans-serif;
+    background-color: #F8F4F9; /* Very light pink/lavender */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    color: #7B68EE; /* Medium Slate Blue */
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+h2, h3 {
+    color: #483D8B; /* Darker Slate Blue */
+    font-weight: 400;
+}
+
+/* --- Buttons --- */
+.btn-primary, .btn-secondary, .btn-spin, .btn-sm {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: #FFB6C1; /* Light Pink */
+    color: white;
+}
+.btn-primary:hover:not(:disabled) {
+    background-color: #FA8072; /* Salmon */
+}
+
+.btn-secondary, .btn-spin {
+    background-color: #E6E6FA; /* Lavender */
+    color: #483D8B;
+}
+.btn-secondary:hover:not(:disabled), .btn-spin:hover:not(:disabled) {
+    background-color: #DDA0DD; /* Plum */
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #ADD8E6; /* Light Blue */
+    margin: 0 5px;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* --- Page 1 Styles --- */
+.page1 {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.setting-group {
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+}
+
+.wheel-count-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#spinTimeSelect {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.wheel-setting-block {
+    margin-top: 20px;
+    padding: 20px;
+    border: 2px dashed #E6E6FA;
+    border-radius: 10px;
+}
+
+.prize-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.prize-item input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #DDA0DD;
+    border-radius: 4px;
+}
+
+/* --- Page 2 Styles --- */
+.page2 {
+    text-align: center;
+}
+
+.main-controls {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#wheelsDisplayContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+}
+
+.wheel-display-block {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    min-width: 350px;
+}
+
+.wheel-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+}
+
+/* Canvas is drawn by JS */
+
+.arrow {
+    position: absolute;
+    top: -15px; /* Move slightly above the wheel */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 25px solid #FF6347; /* Tomato Red for visibility */
+    z-index: 10;
+}
+
+.btn-spin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 15px;
+    font-size: 16px;
+    z-index: 20;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Pop-up Styles --- */
+.popup-overlay {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+/* --- Pop-up Styles --- */
+.popup-overlay {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: popIn 0.3s ease-out;
+    
+    /* --- โค้ดที่เพิ่ม: การจัดการความสูงและการเลื่อน --- */
+    max-height: 80vh; /* จำกัดความสูงสูงสุดเป็น 80% ของความสูงหน้าจอ */
+    overflow-y: auto;  /* เปิดใช้งานการเลื่อนแนวตั้งเมื่อเนื้อหาเกิน */
+    /* ------------------------------------------------ */
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: popIn 0.3s ease-out;
+}
+
+.prize-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #7B68EE; /* Highlight color */
+    display: block;
+    margin-top: 5px;
+}
+
+#popupOkBtn {
+    margin-top: 20px;
+    background-color: #ADD8E6;
+    color: #483D8B;
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        padding: 15px;
+    }
+    h1 {
+        font-size: 24px;
+    }
+    .wheel-display-block {
+        min-width: 100%;
+    }
+    .wheel-container {
+        width: 250px;
+        height: 250px;
+    }
+}

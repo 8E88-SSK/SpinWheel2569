@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>หมุนวงล้อ</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container page2">
+        <h1> <img src="chromosomes.png" alt="Chromosome Icon" style="height: 30px; vertical-align: middle;"> วงล้อเสี่ยงโชค <img src="chromosomes.png" alt="Chromosome Icon" style="height: 30px; vertical-align: middle;"> </h1>
+
+        <div class="main-controls">
+            <button id="spinAllBtn" class="btn-primary" style="display: none;">หมุนพร้อมกันทุกวงล้อ! 💨</button>
+            <button id="shareLinkBtn" class="btn-secondary">แชร์ลิงก์ 🔗</button>
+        </div>
+
+        <div id="wheelsDisplayContainer">
+            </div>
+    </div>
+
+    <div id="resultPopup" class="popup-overlay">
+        <div class="popup-content">
+            <h3>ผลการสุ่ม</h3>
+            <div id="popupResultDetails">
+                </div>
+            <button id="popupOkBtn">ปิด</button>
+        </div>
+    </div>
+    
+    <audio id="spinSound" src="spin.mp3" preload="auto"></audio>
+    <audio id="winSound" src="win.mp3" preload="auto"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

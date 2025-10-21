@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตั้งค่าวงล้อ</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container page1">
+        <h1>🎡 ตั้งค่าวงล้อ 🎡</h1>
+        
+        <div class="setting-group">
+            <h2>เวลาหมุนต่อรอบ</h2>
+            <select id="spinTimeSelect">
+                <option value="1">1 วินาที</option>
+                <option value="2" selected>2 วินาที</option>
+                <option value="3">3 วินาที</option>
+                <option value="4">4 วินาที</option>
+            </select>
+        </div>
+
+        <div class="setting-group wheel-count-controls">
+            <h2>จำนวนวงล้อ</h2>
+            <button id="removeWheelBtn" class="btn-sm">-</button>
+            <span id="wheelCountDisplay">1</span>
+            <button id="addWheelBtn" class="btn-sm">+</button>
+        </div>
+
+        <div id="wheelsSettingsContainer">
+            </div>
+
+        <button id="generateWheelBtn" class="btn-primary">สร้างวงล้อ! 🚀</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
